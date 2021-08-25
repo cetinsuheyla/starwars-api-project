@@ -1,0 +1,148 @@
+/* general styles */
+
+body {
+  background-color: #787a91;
+  background-image: url("steven-lozano-nvooTrgEj7c-unsplash.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+header {
+  text-align: center;
+  padding-top: 1em;
+}
+
+h1 {
+  font-family: "Permanent Marker", cursive;
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-family: "Righteous", cursive;
+}
+
+p {
+  font-family: "Righteous", cursive;
+}
+
+a {
+  text-decoration: none;
+  color: #787a91;
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  padding: 2em 0;
+}
+
+.buttons {
+  list-style-type: none;
+  font-family: "Righteous", cursive;
+  font-size: 1.5rem;
+}
+
+.options {
+  cursor: pointer;
+  margin: 0 30px;
+}
+
+.active {
+  border-bottom: 2px solid #000;
+}
+
+.row {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* card styles */
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.card {
+  flex: 0 1 20%;
+  opacity: 0.7;
+  background-color: #f2e1c1;
+  border: 1px solid #787a91;
+  margin-bottom: 1em;
+  padding: 1em;
+  border-radius: 1em;
+}
+
+.card p {
+  text-align: left;
+}
+
+/* detail pages */
+
+#planetDetail,
+#residentDetail {
+  background-color: #f2e1c1;
+  width: 100vh;
+  opacity: 0.7;
+  border-radius: 1em;
+  margin: 2em auto;
+  padding: 2em;
+}
+
+#planetDetail span {
+  font-size: 1.5rem;
+  font-family: "Righteous", cursive;
+}
+
+.card a:hover,
+#planetDetail a:hover,
+#residentDetail a:hover {
+  color: #000;
+}
+
+#planetDetail p,
+#residentDetail p {
+  font-size: 2rem;
+  font-family: "Righteous", cursive;
+}
+
+#residentNames {
+  text-align: left;
+}
+
+#backButton {
+  background-color: #000;
+  color: #787a91;
+  font-family: "Righteous", cursive;
+  font-size: 1.5rem;
+  padding: 0.5em 1em;
+}
+
+#backButton a:hover {
+  color: #f2e1c1;
+}
+
+/* loader style */
+
+.loader {
+  margin: 100px auto;
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #787a91;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
