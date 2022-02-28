@@ -1,31 +1,29 @@
-const people_url = "https://swapi.dev/api/people"
-
-// assigning a function to get people's data from the api
+const people_url = "https://swapi.dev/api/people";
 
 async function getData(url, renderData) {
-    const response = await fetch(url)
-    var data       = await response.json()
-    renderData(data.results)   
+	const response = await fetch(url);
+	var data = await response.json();
+	renderData(data.results);
 }
 
-getData(people_url, renderResidentData)
+getData(people_url, renderResidentData);
 
-async function renderResidentData(personData){
-    const urlParams = new URLSearchParams(location.search);
-    residentSection = ''
+async function renderResidentData(personData) {
+	const urlParams = new URLSearchParams(location.search);
+	residentSection = "";
 
-    for (const [key, value] of urlParams) {
-        const response   = await fetch(`${people_url}/${value}/`)
-        const personData = await response.json()
+	for (const [key, value] of urlParams) {
+		const response = await fetch(`${people_url}/${value}/`);
+		const personData = await response.json();
 
-        const homeWorldData = await fetch(personData.homeworld)
-        const homeWorld     = await homeWorldData.json()
+		const homeWorldData = await fetch(personData.homeworld);
+		const homeWorld = await homeWorldData.json();
 
-        const splittedURL = homeWorld.url.split("/")
-                const id  = splittedURL[splittedURL.length - 2]
-                const url = `homeworld.html?id=${id}`
+		const splittedURL = homeWorld.url.split("/");
+		const id = splittedURL[splittedURL.length - 2];
+		const url = `homeworld.html?id=${id}`;
 
-        residentSection += `<div class="container">
+		residentSection += `<div class="container">
                     <h1>${personData.name}</h1>
                     <p>Height: ${personData.height}</p>
                     <p>Mass: ${personData.mass}</p>
@@ -36,7 +34,7 @@ async function renderResidentData(personData){
                     <p>Home World: <a href="${url}">${homeWorld.name}</a></p>     
                     <button id="backButton"><a href="index.html">Back to home</a></button>
 
-                    </div>`
-    }
-    document.querySelector("#residentDetail").innerHTML = residentSection
+                    </div>`;
+	}
+	document.querySelector("#residentDetail").innerHTML = residentSection;
 }

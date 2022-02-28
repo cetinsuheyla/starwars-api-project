@@ -1,54 +1,49 @@
-// selecting and assigning html elements
+// select and assign html elements
 
-const results = document.querySelector("#results")
+const results = document.querySelector("#results");
 
-const buttons = document.querySelectorAll(".options")
+const buttons = document.querySelectorAll(".options");
 
-const loader  = document.querySelector(".loader")
+const loader = document.querySelector(".loader");
 
-const cards   = document.querySelector(".cards")
+const cards = document.querySelector(".cards");
 
-// defining functions for showong and hiding loader
+// define functions for showing and hiding loader
 
 function hideLoader() {
-    loader.style.display = "none"
+	loader.style.display = "none";
 }
 function showLoader() {
-    loader.style.display = "block"
+	loader.style.display = "block";
 }
 
-hideLoader()
+hideLoader();
 
-//fetching and displaying the data according to the button clicked
+//fetch and display the data according to the button clicked
 
-async function asyncFetch(value){
-    showLoader()
-    cards.style.display = "none"
-    const response      = await fetch(`https://swapi.dev/api/${value}/`)
-    const data          = await response.json()
-    await showResults(data, value)   
+async function asyncFetch(value) {
+	showLoader();
+	cards.style.display = "none";
+	const response = await fetch(`https://swapi.dev/api/${value}/`);
+	const data = await response.json();
+	await showResults(data, value);
 }
 
-async function showResults(data, value){
-    
-    let resultsSection = ''
-    if(value === 'people'){
+async function showResults(data, value) {
+	let resultsSection = "";
+	if (value === "people") {
+		document.querySelector("#people").classList.add("active");
+		document.querySelector("#planets").classList.remove("active");
 
-        document.querySelector("#people").classList.add("active")
-        document.querySelector("#planets").classList.remove("active")
-        
+		for (let person of data.results) {
+			const response = await fetch(person.homeworld);
+			const homeWorld = await response.json();
 
-        for (let person of data.results){
+			const splittedURL = person.homeworld.split("/");
+			const id = splittedURL[splittedURL.length - 2];
+			const url = `homeworld.html?id=${id}`;
 
-                const response  = await fetch(person.homeworld)
-                const homeWorld = await response.json()
-
-                const splittedURL = person.homeworld.split("/")
-                const id          = splittedURL[splittedURL.length - 2]
-                const url         = `homeworld.html?id=${id}`
-
-
-            resultsSection += `
+			resultsSection += `
                 <div class="card">
                     <h2>${person.name}</h2>
                     <p>Birth Year: ${person.birth_year}</p>
@@ -56,62 +51,55 @@ async function showResults(data, value){
                     <p>Home World: <a href=${url}>${homeWorld.name}</a></p>
                     
                 </div>
-            `
-        }
-    }
+            `;
+		}
+	}
 
-    if(value === 'planets'){
+	if (value === "planets") {
+		document.querySelector("#people").classList.remove("active");
+		document.querySelector("#planets").classList.add("active");
 
-        document.querySelector("#people").classList.remove("active")
-        document.querySelector("#planets").classList.add("active")
+		for (let planet of data.results) {
+			//accumulate the residents data of each planet
 
-        for(let planet of data.results){
-            
-            //accumulating the residents data of each planet
+			let acc = `<div>`;
 
-            let acc = `<div>`
+			if (planet.residents.length == 0) {
+				acc += `<p>"This planet does not have any resident."</p>`;
+			}
 
-            if(planet.residents.length == 0){
-                    acc += `<p>"This planet does not have any resident."</p>`
-                }
+			for (let resident of planet.residents) {
+				const response = await fetch(resident);
+				const residentDetail = await response.json();
 
-            for(let resident of planet.residents){
-                const response       = await fetch(resident)
-                const residentDetail = await response.json()
-            
-                const splittedURL = residentDetail.url.split("/")
-                const id          = splittedURL[splittedURL.length - 2]
-                const url         = `residents.html?id=${id}`
-                
+				const splittedURL = residentDetail.url.split("/");
+				const id = splittedURL[splittedURL.length - 2];
+				const url = `residents.html?id=${id}`;
 
-                acc += `<section id="residentNames"><span><a href="${url}">${residentDetail.name} </a></span></section>`
-            }
-            
-            acc += "</div>"
-            resultsSection += ` <div class="card">
+				acc += `<section id="residentNames"><span><a href="${url}">${residentDetail.name} </a></span></section>`;
+			}
+
+			acc += "</div>";
+			resultsSection += ` <div class="card">
             <h2>${planet.name}</h2>
             <p>Diameter: ${planet.diameter}</p>
             <p>Climate: ${planet.climate}</p>
             <p>Residents:</p>
             ${acc}
-            </div>`       
-        }
-    }
+            </div>`;
+		}
+	}
 
-    hideLoader()
+	hideLoader();
 
-    cards.style.display = "flex"
+	cards.style.display = "flex";
 
-    results.innerHTML = resultsSection
+	results.innerHTML = resultsSection;
 }
 
-
-
-//event listener for buttons
-buttons.forEach(item => item.addEventListener('click', e => {
-    asyncFetch(e.target.textContent.trim().toLowerCase())
-}))
-
-
-
-
+//create event listener for buttons
+buttons.forEach((item) =>
+	item.addEventListener("click", (e) => {
+		asyncFetch(e.target.textContent.trim().toLowerCase());
+	})
+);
